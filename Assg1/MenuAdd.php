@@ -1,6 +1,6 @@
 <!--
 Assignment 1, SCSM2223-25262 (MenuAdd.php)
-Group Name: ???
+Group Name: Strange
 -->
 <?php require 'libs/authpage.php'; ?>
 <?php require 'libs/db_connect_PDO.php'; ?>
@@ -9,10 +9,22 @@ $task = $_REQUEST['task'];
 $form_complete = FALSE;
 
 if ($task == "Cancel") {
-    // ???
-    
+  header("Location: MenuManage.php");
+  exit();
 } else if ($task == "Add") {
-  // ???
+  $name = $_REQUEST['name'];
+  $type = $_REQUEST['type'];
+  $price = $_REQUEST['price'];
+
+  $stmt = $pdo->prepare("INSERT INTO menus (name, type, price) VALUES (:name, :type, :price)");
+  try {
+    $stmt->execute([':name'=>$name, ':type'=>$type, ':price'=>$price]);
+    $form_complete = TRUE;
+    header("Location: MenuManage.php");
+    exit();
+  } catch (PDOException $ex) {
+    echo "Database Error: " . $ex->getMessage();
+  }
 }
 ?>
 

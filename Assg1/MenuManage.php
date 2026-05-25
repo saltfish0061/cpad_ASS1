@@ -1,12 +1,22 @@
 <!--
 Assignment 1, SCSM2223-25262 (MenuManage.php)
-Group Name: ???
+Group Name: Strange
 -->
 <?php require 'libs/authpage.php'; ?>
 <?php require 'libs/db_connect_PDO.php'; ?>
 <?php
 $keywordMenu = "";
 $sortMenu = "type,name";
+
+// If user click submit for search 
+if (isset($_POST['keywordMenu'])) {
+    $keywordMenu = $_POST['keywordMenu'];
+}
+
+// If user click on the column header to sort the menu 
+if (isset($_GET['sortMenu'])) {
+    $sortMenu = $_GET['sortMenu'];
+}
 
 // Assume that no field is being selected to sort the menu rows
 $sortFields = ['name'=>'', 'type,name'=>'', 'price'=>''];
@@ -83,8 +93,8 @@ while ($row = $stmt->fetch()) {
           <td align="center"><?= $row['type'] ?></td>
           <td align="right"><?= number_format($row['price'], 2) ?></td>
           <td align="center">
-            <a href="">Update</a> | 
-            <a href="">Delete</a>
+            <a href="MenuUpdate.php?id=<?= $row['id'] ?>">Update</a> | 
+            <a href="MenuDelete.php?id=<?= $row['id'] ?>">Delete</a>
           </td>
         </tr>
 <?php 
@@ -98,7 +108,7 @@ while ($row = $stmt->fetch()) {
           <td align="center">...</td>
           <td align="right">...</td>
           <td align="center">
-            <a href="">Add</a>
+            <a href="MenuAdd.php">Add</a>
           </td>
         </tr>
       </table>
