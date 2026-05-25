@@ -1,0 +1,78 @@
+1) Using the MySQL/MariaDB root account, create a user named 'cpad' with 
+   the password 'cpadPassword' and proceed with the following database 
+   tasks:
+
+CREATE DATABASE cpad_assg1;
+GRANT ALL PRIVILEGES ON cpad_assg1.* TO 'cpad'@'localhost';
+FLUSH PRIVILEGES;
+
+
+2) Login to MySQL/MariaDB database server using 'cpad' user account and 
+   run the following database/SQL commands:
+
+USE cpad_assg1;
+
+CREATE TABLE menus (id INT AUTO_INCREMENT PRIMARY KEY, 
+                    name VARCHAR(50), 
+                    type VARCHAR(10), 
+                    price FLOAT);
+                    
+INSERT INTO menus (name, type, price) VALUES 
+('Beef Burger', 'Food', '8.50'),
+('Chicken Pizza', 'Food', '15.00'), 
+('Creamy Alfredo Pasta', 'Food', '8.50'),
+('Fresh Orange Juice', 'Drink', '5.00'),
+('Hot Chinese Tea', 'Drink', '3.00'),
+('Hot Arabica Coffee', 'Drink', '4.00');
+
+SELECT * FROM menus;
+
+CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, 
+                    name VARCHAR(100), 
+                    email VARCHAR(50),
+                    phone VARCHAR(50),
+                    role VARCHAR(15),
+                    username  VARCHAR(50),
+                    password VARCHAR(255));
+                    
+INSERT INTO users (name, email, phone, role, username, password) VALUES 
+('Admin', '-', '-', 'ADMIN', 'admin', 'adminPass'),
+('Cahs01', '-', '-', 'CASHIER', 'cash01', 'cashPass'),
+('Adam', 'adam@gmail.com', '019-1230079', 'CUSTOMER', 'adam@gmail.com', '019-1230079'),
+('Borhan', 'borhan@yahoo.com', '011-2230841',  'CUSTOMER', 'borhan@yahoo.com', '011-2230841'),
+('Cindy', 'cindy@gradute.utm.my', '017-7640067', 'CUSTOMER', 'cindy@gradute.utm.my', '017-7640067');
+
+SELECT * FROM users;
+                    
+CREATE TABLE orders (id INT AUTO_INCREMENT PRIMARY KEY, 
+                     user_id INT,
+                     datetime DATETIME, 
+                     delivery VARCHAR(15),
+                     comments VARCHAR(150),
+                     status VARCHAR(15));
+                     
+INSERT INTO orders (user_id, datetime, delivery, comments, status) VALUES
+('3', '2026-05-21 17:30:07', 'Dine-in', 'Table no. 3', 'Delivered'),
+('4', '2026-05-21 18:10:23', 'Dine-in', 'Table no. 1', 'Prepare'),
+('5', '2026-05-21 18:24:15', 'Takeaway', 'Will take the order at 7:00 PM', 'New');
+
+SELECT * FROM orders;
+
+                     
+CREATE TABLE order_menus (id INT AUTO_INCREMENT PRIMARY KEY, 
+                          order_id INT,
+                          menu_id INT, 
+                          qty INT);
+                          
+INSERT INTO order_menus (order_id, menu_id, qty) VALUES 
+('1', '6', '1'),
+('1', '1', '2'),
+('2', '5', '1'),
+('2', '2', '1'),
+('3', '4', '3'),
+('3', '1', '1'),
+('3', '2', '1'),
+('3', '3', '2');
+                          
+SELECT * FROM order_menus;                      
+
