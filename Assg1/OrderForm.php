@@ -1,6 +1,6 @@
 <!--
 Assignment 1, SCSM2223-25262 (OrderForm.php)
-Group Name: ???
+Group Name: Strange
 -->
 <?php require 'libs/db_connect_PDO.php'; ?>
 
@@ -9,7 +9,24 @@ Group Name: ???
 $name = "";
 $email = "";
 $phone = "";
-// ???
+
+if (isset($_COOKIE['username'])) {
+  $username = $_COOKIE['username'];
+
+  try {
+    $stmt_user = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt_user->execute([$username]);
+
+    if ($row_user = $stmt_user->fetch()) {
+      $name = $row_user['name'];
+      $email = $row_user['email'];
+      $phone = $row_user['phone'];
+    }
+
+  } catch (PDOException $ex) {
+    echo "Database Error: " . $ex->getMessage();
+  }
+}
 
 // Start query foods and drinks from database here
 $stmt_food = $pdo->prepare("SELECT * FROM menus WHERE type='Food' ORDER BY name ");
@@ -61,15 +78,15 @@ try {
         <table cellpadding="3">
           <tr>
             <td align="right">Name: </td>
-            <td><input type="text" name="name" size="30" value="" required></td>
+            <td><input type="text" name="name" size="30" value="<?=$name ?>" required></td>
           </tr>
           <tr>
             <td align="right">Email: </td>
-            <td><input type="text" name="email" size="20" value="" required></td>
+            <td><input type="text" name="email" size="20" value="<?=$email ?>" required></td>
           </tr>
           <tr>
             <td align="right">Phone Number: </td>
-            <td><input type="text" name="phone" size="20" value="" required></td>
+            <td><input type="text" name="phone" size="20" value="<?=$phone ?>" required></td>
           </tr>
         </table>
         <br><hr>
