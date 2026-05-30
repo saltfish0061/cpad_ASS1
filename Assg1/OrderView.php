@@ -1,6 +1,6 @@
 <!--
 Assignment 1, SCSM2223-25262 (OrderView.php)
-Group Name: ???
+Group Name: Strange
 -->
 <?php require 'libs/authpage.php'; ?>
 <?php require 'libs/db_connect_PDO.php'; ?>
