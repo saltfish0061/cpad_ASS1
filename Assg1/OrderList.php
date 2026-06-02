@@ -8,8 +8,8 @@ Group Name: Strange
 $keywordOrder = "";
 $sortOrder = "datetime desc"; // default sort order is datetime, descending 
 
-if (isset($_POST['keywordOrder'])) {
-  $keywordOrder = $_POST['keywordOrder'];
+if (isset($_GET['keywordOrder'])) {
+  $keywordOrder = $_GET['keywordOrder'];
 }
 if (isset($_GET['sortOrder'])) {
   $sortOrder = $_GET['sortOrder'];
@@ -23,14 +23,14 @@ $sortFields[$sortOrder] = "***";
 
 // Construct the SQL to list customer'a orders based on $keywordOrder and $sortOrder variable
 $stmt = $pdo->prepare("SELECT orders.*, users.name, users.phone, (SELECT SUM(qty) 
-FROM order_menus WHERE order_id = orders.id) as total_qty 
-FROM orders JOIN users ON orders.user_id = users.id 
-WHERE users.name LIKE '%$keywordOrder%' 
-OR users.phone LIKE '%$keywordOrder%' 
-OR orders.delivery LIKE '%$keywordOrder%' 
-OR orders.status LIKE '%$keywordOrder%' 
-OR orders.datetime LIKE '%$keywordOrder%' 
-ORDER BY $sortOrder");
+  FROM order_menus WHERE order_id = orders.id) as total_qty 
+  FROM orders JOIN users ON orders.user_id = users.id 
+  WHERE users.name LIKE '%$keywordOrder%' 
+  OR users.phone LIKE '%$keywordOrder%' 
+  OR orders.delivery LIKE '%$keywordOrder%' 
+  OR orders.status LIKE '%$keywordOrder%' 
+  OR orders.datetime LIKE '%$keywordOrder%' 
+  ORDER BY $sortOrder");
 
 try {
   $stmt->execute();
@@ -74,9 +74,10 @@ try {
       <td>
         <h2>List Customer Order</h2>
         <div style="text-align: right">
-          <form action="OrderList.php" method="POST">
-            <b>Search:</b> <input type="text" name="keywordOrder" value="<?= $keywordOrder ?>"> <button
-              type="submit">Submit</button>
+          <form action="OrderList.php" method="GET">
+            <input type="hidden" name="sortOrder" value="<?= $sortOrder ?>">
+            <b>Search:</b> <input type="text" name="keywordOrder" value="<?= $keywordOrder ?>">
+            <button type="submit">Submit</button>
           </form>
         </div>
         <br>
@@ -84,12 +85,15 @@ try {
           <tr>
             <th>No.</th>
             <th>ID</th>
-            <th><a href="OrderList.php?sortOrder=datetime+desc">Date-Time<?= $sortFields['datetime desc'] ?></a></th>
-            <th><a href="OrderList.php?sortOrder=name">Name <?= $sortFields['name'] ?></a></th>
-            <th><a href="OrderList.php?sortOrder=delivery">Delivery<?= $sortFields['delivery'] ?></a></th>
-            <th><a href="OrderList.php?sortOrder=phone">Phone<?= $sortFields['phone'] ?></a></th>
+            <th><a href="OrderList.php?sortOrder=datetime+desc&keywordOrder=<?= urlencode($keywordOrder) ?>">Date-Time<?= $sortFields['datetime desc'] ?></a>
+            </th>
+            <th><a href="OrderList.php?sortOrder=name&keywordOrder=<?= urlencode($keywordOrder) ?>">Name<?= $sortFields['name'] ?></a></th>
+            <th><a href="OrderList.php?sortOrder=delivery&keywordOrder=<?= urlencode($keywordOrder) ?>">Delivery<?= $sortFields['delivery'] ?></a>
+            </th>
+            <th><a href="OrderList.php?sortOrder=phone&keywordOrder=<?= urlencode($keywordOrder) ?>">Phone<?= $sortFields['phone'] ?></a>
+            </th>
             <th>Menu Ordered</th>
-            <th><a href="OrderList.php?sortOrder=status">Status</a></th>
+            <th><a href="OrderList.php?sortOrder=status&keywordOrder=<?= urlencode($keywordOrder) ?>">Status</a></th>
             <th>Operations</th>
           </tr>
           <?php
